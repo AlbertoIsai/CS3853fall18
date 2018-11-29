@@ -1,66 +1,40 @@
 #!/usr/bin/python
-
+import time
 import sys
+NUMBER_OF_WAYS = 16
 
-class Queue:
-    def __init__(self):
-        self.queue = list()
-        self.maxSize = 16
-        self.head = 0
-        self.tail = 0
+class Cache(object):
 
-    #adding elements to queue
-    def enqueue(self,data):
-        #checking to avoid duplicate entry
-        if data not in self.queue:
-            self.queue.insert(0,data)
-            return True
-        self.queue.append(data)
-        self.tail += 1
-        return False
-    
-    #removing the last elemenet
-    def dequeue(self):
-        if self.size() <= 0:
-            self.resetQueue()
-            return("Queue Empty")
-        data = self.queue[self.head]
-        self.head+=1
-        return data
-    
-    def size(self):
-        return self.tail - self.head
+	def __init__(self, hex_str):
+		self.address = int(hex_str, 16)
+		self.ts = time.time()
 
-    #reset queue
-    def printQueue(self):
-        self.tail = 0
-        self.head = 0
-        self.queue = list()
+	def get_offset(self):
+		offset = hex(self.address & 0x3F)
+		return offset
 
+	def get_set(self):
+		set = hex((self.address & 0x40)/0b1000000)
+		return set
 
-q = Queue()
-hit = 0.00
-miss = 0.00
-total = 0.00
-missRate = 0.00
+	def get_tag(self):
+		tag = hex((self.address & 0xF80)/0b10000000)
+		return tag
 
+	def get_time(self):
+		return self.ts
 
-fh = open(sys.argv[1], "r")
+c = Cache("0x108")
 
-for line in fh:
-    fields = line.strip().split()
- ##   print(fields[1],fields[2])
-    if q.enqueue(fields[2]) is True:
-        hit += 1
-        print hit
-    else:
-        miss += 1
-        print miss
- ##   print(q.size())
+print c.get_offset()
+print c.get_set()
+print c.get_tag()
+print c.get_time()
+c1 = Cache("0x109")
+set0 = [0] * NUMBER_OF_WAYS
+set1 = [0] * NUMBER_OF_WAYS
 
-total = hit + miss
-print miss
-print total
-missRate = (miss / total) * 1.0
-
-print float(missRate)
+set0[1] = c
+set0[2] = c1
+print set0[1].get_time()
+print set0[1].get_time()
