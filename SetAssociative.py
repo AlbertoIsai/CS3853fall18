@@ -25,7 +25,10 @@ class Cache(object):
 
 	def get_time(self):
 		return self.ts
-
+hit = 0.00
+miss = 0.00
+total = 0.00
+missRate = 0.00
 fh = open(sys.argv[1], "r")
 for line in fh:
 	fields = line.strip().split()
@@ -34,10 +37,7 @@ for line in fh:
 	set1 = []
 	tagMatch = False
 	tagIndex = 0
-	hit = 0.00
-	miss = 0.00
-	total = 0.00
-	missRate = 0.00
+
 	y = 0
 	z = 0
 	if c.get_set() == 0:
