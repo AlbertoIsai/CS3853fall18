@@ -31,6 +31,8 @@ total = 0.00
 missRate = 0.00
 set0 = []
 set1 = []
+set0Full = False
+set1Full = False
 fh = open(sys.argv[1], "r")
 for line in fh:
 	fields = line.strip().split()
@@ -39,8 +41,7 @@ for line in fh:
 	tagMatch = False
 	tagIndex = 0
 
-	set0Full = False
-	set1Full = False
+
 	if c.get_set() == 0:
 		if not set0:
 			set0.insert(0, c)
@@ -93,7 +94,7 @@ for line in fh:
 				set1.sort(key=operator.attrgetter('ts'))
 				set1.insert(0, c)
 				miss += 1
-			else:
+			else :
 				set1.sort(key=operator.attrgetter('ts'))
 				set1.pop(0)
 				set1.append(c)
